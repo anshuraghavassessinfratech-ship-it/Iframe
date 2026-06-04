@@ -1,268 +1,146 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Metabase Dashboard | Secure Access</title>
-    <!-- Import Google Font for Premium Modern Typography -->
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <link rel="stylesheet" href="/style.css">
 </head>
-
 <body>
+  <div class="app-container">
+    <div id="login-container" class="login-card">
+      <div class="login-header">
+        <h1>Login</h1>
+        <p>Enter your credentials to continue.</p>
+      </div>
 
-    <!-- Ambient background glows -->
-    <div class="ambient-bg">
-        <div class="blob blob-1"></div>
-        <div class="blob blob-2"></div>
-    </div>
+      <div id="message" style="margin-bottom: 16px; color: red;"></div>
 
-    <!-- Page load loading overlay -->
-    <div id="app-loader" class="app-loader">
-        <div class="app-loader-spinner"></div>
-        <p>Securing connection...</p>
-    </div>
-
-    <div class="app-container">
-
-        <!-- 1. LOGIN SCREEN -->
-        <div id="login-section" class="login-card">
-            <div class="login-header">
-                <div class="logo-container">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
-                    </svg>
-                </div>
-                <h1>Dashboard Login</h1>
-                <p>Please enter your username and password to log in.</p>
-            </div>
-
-            <!-- Error Banner -->
-            <div id="alert-banner" class="alert-banner">
-                <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
-                </svg>
-                <span id="alert-message">Invalid credentials.</span>
-            </div>
-
-            <!-- Form -->
-            <form id="login-form" onsubmit="handleLogin(event)" style="display: flex; flex-direction: column; gap: 20px;">
-                <div class="form-group">
-                    <label class="form-label" for="username">Username</label>
-                    <div class="input-wrapper">
-                        <span class="input-icon">
-                            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-                            </svg>
-                        </span>
-                        <input class="form-input" type="text" id="username" placeholder="Enter username" required autocomplete="username">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label" for="password">Password</label>
-                    <div class="input-wrapper">
-                        <span class="input-icon">
-                            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
-                            </svg>
-                        </span>
-                        <input class="form-input" type="password" id="password" placeholder="Enter password" required autocomplete="current-password">
-                    </div>
-                </div>
-
-                <button type="submit" class="login-btn">
-                    <span id="btn-text">Log In</span>
-                    <div id="btn-spinner" class="spinner"></div>
-                </button>
-            </form>
+      <form id="login-form" class="form-group">
+        <div class="form-group">
+          <label class="form-label" for="username">Username</label>
+          <input id="username" name="username" class="form-input" type="text" required />
         </div>
 
-        <!-- 2. SECURE DASHBOARD FRAME -->
-        <div id="dashboard-section" class="dashboard-view">
-            <div class="dashboard-header">
-                <div class="dashboard-title-area">
-                    <div class="dashboard-badge">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
-                        </svg>
-                    </div>
-                    <div class="title-text">
-                        <h2>Enterprise Business Analytics</h2>
-                        <p>Real-time performance metrics (Encrypted JWT Session)</p>
-                    </div>
-                </div>
-
-                <div class="header-controls">
-                    <div class="user-pill">
-                        <span class="status-dot"></span>
-                        <span id="user-display">admin</span>
-                    </div>
-                    <button class="logout-btn" onclick="handleLogout()">
-                        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
-                        </svg>
-                        Logout
-                    </button>
-                </div>
-            </div>
-
-            <div class="iframe-container">
-                <iframe id="dashboard-frame"></iframe>
-            </div>
+        <div class="form-group">
+          <label class="form-label" for="password">Password</label>
+          <input id="password" name="password" class="form-input" type="password" required />
         </div>
 
+        <button class="login-btn" type="submit">Login</button>
+      </form>
     </div>
 
-    <script>
-        // Use root-relative API paths on deployment
-        const API_BASE = "";
+    <div id="dashboard-container" class="dashboard-view login-card" style="display: none;">
+      <div class="dashboard-header">
+        <div class="dashboard-title-area">
+          <div class="dashboard-badge">✓</div>
+          <div class="title-text">
+            <h2>Dashboard</h2>
+            <p id="dashboard-welcome">Welcome!</p>
+          </div>
+        </div>
+      </div>
 
-        // DOM elements
-        const appLoader = document.getElementById("app-loader");
-        const loginSection = document.getElementById("login-section");
-        const dashboardSection = document.getElementById("dashboard-section");
-        const alertBanner = document.getElementById("alert-banner");
-        const alertMessage = document.getElementById("alert-message");
-        const btnText = document.getElementById("btn-text");
-        const btnSpinner = document.getElementById("btn-spinner");
-        const userDisplay = document.getElementById("user-display");
-        const dashboardFrame = document.getElementById("dashboard-frame");
+      <button class="logout-btn" id="logout-button" type="button">Logout</button>
+    </div>
+  </div>
 
-        // Runs immediately on load to check existing session
-        async function checkSession() {
-            const token = localStorage.getItem("authToken");
-            if (!token) {
-                showLogin();
-                return;
-            }
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const loginContainer = document.getElementById("login-container");
+      const dashboardContainer = document.getElementById("dashboard-container");
+      const loginForm = document.getElementById("login-form");
+      const messageEl = document.getElementById("message");
+      const dashboardWelcome = document.getElementById("dashboard-welcome");
+      const logoutButton = document.getElementById("logout-button");
 
-            try {
-                const response = await fetch(`${API_BASE}/api/verify-session`, {
-                    headers: {
-                        "Authorization": `Bearer ${token}`
-                    }
-                });
+      console.log("DOM loaded", {
+        loginContainer: !!loginContainer,
+        dashboardContainer: !!dashboardContainer,
+        loginForm: !!loginForm,
+        messageEl: !!messageEl,
+        dashboardWelcome: !!dashboardWelcome,
+        logoutButton: !!logoutButton
+      });
 
-                if (response.ok) {
-                    const data = await response.json();
-                    userDisplay.textContent = data.username || "Authorized User";
-                    await loadDashboard(token);
-                } else {
-                    // Invalid/Expired session token
-                    handleLogout();
-                }
-            } catch (err) {
-                console.error("Backend offline or connection error:", err);
-                showError("Cannot reach security server. Please make sure the server is running on port 5000.");
-                showLogin();
-            }
+      if (!loginContainer || !dashboardContainer || !loginForm || !messageEl || !dashboardWelcome || !logoutButton) {
+        console.error("Missing required UI element(s)");
+        return;
+      }
+
+      function setMessage(text, isError = true) {
+        messageEl.textContent = text;
+        messageEl.style.color = isError ? "red" : "green";
+      }
+
+      loginForm.addEventListener("submit", async function(event) {
+        event.preventDefault();
+        setMessage("");
+
+        const username = document.getElementById("username").value.trim();
+        const password = document.getElementById("password").value;
+
+        console.log("Submitting login", { username });
+
+        try {
+          const response = await fetch("/api/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ username, password })
+          });
+
+          const data = await response.json();
+          console.log("Login response", { status: response.status, data });
+
+          if (!response.ok) {
+            setMessage(data.error || "Login failed.");
+            return;
+          }
+
+          if (data.token) {
+            localStorage.setItem("authToken", data.token);
+          }
+          localStorage.setItem("username", username);
+          showDashboard(username);
+        } catch (error) {
+          console.error("Login fetch failed", error);
+          setMessage("Login request failed.");
         }
+      });
 
-        // Show the login section and hide the dashboard
-        function showLogin() {
-            dashboardSection.style.display = "none";
-            loginSection.style.display = "flex";
-            appLoader.style.opacity = "0";
-            setTimeout(() => { appLoader.style.display = "none"; }, 300);
-        }
+      logoutButton.addEventListener("click", function() {
+        localStorage.removeItem("authToken");
+        localStorage.removeItem("username");
+        showLogin();
+      });
 
-        // Handle Form Submission / Login Authentication
-        async function handleLogin(event) {
-            event.preventDefault();
-            hideError();
+      function showDashboard(username) {
+        console.log("showDashboard called", { username });
+        loginContainer.style.display = "none";
+        dashboardContainer.style.display = "flex";
+        dashboardContainer.style.flexDirection = "column";
+        dashboardWelcome.textContent = `Welcome, ${username}!`;
+        console.log("Dashboard visible?", {
+          inlineDisplay: dashboardContainer.style.display,
+          computedDisplay: window.getComputedStyle(dashboardContainer).display
+        });
+        setMessage("");
+      }
 
-            const usernameInput = document.getElementById("username").value.trim();
-            const passwordInput = document.getElementById("password").value;
+      function showLogin() {
+        console.log("showLogin called");
+        dashboardContainer.style.display = "none";
+        loginContainer.style.display = "flex";
+        loginContainer.style.flexDirection = "column";
+        setMessage("");
+      }
 
-            // Show spinner and disable button
-            btnText.style.display = "none";
-            btnSpinner.style.display = "block";
-
-            try {
-                const response = await fetch(`${API_BASE}/api/login`, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        username: usernameInput,
-                        password: passwordInput
-                    })
-                });
-
-                const data = await response.json();
-
-                if (response.ok && data.token) {
-                    // Success! Store token and transition to dashboard
-                    localStorage.setItem("authToken", data.token);
-                    userDisplay.textContent = data.username || usernameInput;
-                    await loadDashboard(data.token);
-                } else {
-                    showError(data.error || "Authentication failed. Incorrect username or password.");
-                }
-            } catch (err) {
-                console.error("Login request failed:", err);
-                showError("Server is offline. Start backend server first on port 5000.");
-            } finally {
-                btnText.style.display = "block";
-                btnSpinner.style.display = "none";
-            }
-        }
-
-        // Fetch protected Metabase token and display inside iframe
-        async function loadDashboard(token) {
-            try {
-                const response = await fetch(`${API_BASE}/api/metabase-token`, {
-                    headers: {
-                        "Authorization": `Bearer ${token}`
-                    }
-                });
-
-                if (response.ok) {
-                    const data = await response.json();
-                    dashboardFrame.src = data.iframeUrl;
-
-                    // Transition Views with smooth animation
-                    loginSection.style.display = "none";
-                    dashboardSection.style.display = "flex";
-                    appLoader.style.opacity = "0";
-                    setTimeout(() => { appLoader.style.display = "none"; }, 300);
-                } else if (response.status === 401 || response.status === 403) {
-                    // Unauthenticated or Token expired
-                    handleLogout();
-                } else {
-                    showError("Failed to authenticate with dashboard token endpoint.");
-                }
-            } catch (err) {
-                console.error("Dashboard load failed:", err);
-                showError("Could not load dashboard. Backend connection failed.");
-            }
-        }
-
-        // Handle Logout
-        function handleLogout() {
-            localStorage.removeItem("authToken");
-            dashboardFrame.src = "";
-            document.getElementById("username").value = "";
-            document.getElementById("password").value = "";
-            showLogin();
-        }
-
-        // Helper utilities to display/hide errors beautifully
-        function showError(msg) {
-            alertMessage.textContent = msg;
-            alertBanner.style.display = "flex";
-        }
-
-        function hideError() {
-            alertBanner.style.display = "none";
-        }
-
-        // Initialize immediately
-        checkSession();
-    </script>
+      const storedUsername = localStorage.getItem("username");
+      if (storedUsername) {
+        showDashboard(storedUsername);
+      }
+    });
+  </script>
 </body>
-
 </html>
