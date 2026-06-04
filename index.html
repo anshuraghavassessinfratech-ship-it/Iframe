@@ -116,10 +116,8 @@
     </div>
 
     <script>
-        // Dynamically get the base origin or fallback to local backend port
-        const API_BASE = (window.location.protocol === "file:" || window.location.origin === "null" || !window.location.origin)
-            ? "http://127.0.0.1:5000"
-            : window.location.origin;
+        // Use root-relative API paths on deployment
+        const API_BASE = "";
 
         // DOM elements
         const appLoader = document.getElementById("app-loader");
@@ -216,7 +214,7 @@
         // Fetch protected Metabase token and display inside iframe
         async function loadDashboard(token) {
             try {
-                const response = await fetch(`${API_BASE}/metabase-token`, {
+                const response = await fetch(`${API_BASE}/api/metabase-token`, {
                     headers: {
                         "Authorization": `Bearer ${token}`
                     }
