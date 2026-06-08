@@ -1,15 +1,11 @@
 const serverless = require("serverless-http");
 const express = require("express");
 const cors = require("cors");
-const path = require("path");
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
-
-// Serve static files from parent directory
-app.use(express.static(path.join(__dirname, "../")));
 
 const DEFAULT_USERNAME = process.env.DEFAULT_USERNAME || "admin";
 const DEFAULT_PASSWORD = process.env.DEFAULT_PASSWORD || "Admin@123456";
@@ -34,9 +30,9 @@ app.post(["/api/login", "/login"], (req, res) => {
     return res.status(401).json({ success: false, error: "Invalid username or password." });
 });
 
-// Serve index.html for all other routes (SPA)
-app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "../index.html"));
+// Health check endpoint
+app.get("/api/health", (req, res) => {
+    res.json({ status: "ok" });
 });
 
 module.exports = serverless(app);
