@@ -8,6 +8,19 @@
     <!-- Import Google Font for Premium Modern Typography -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/style.css">
+    
+    <!-- Metabase Web Component Config -->
+    <script defer src="http://82.29.160.161:3000/app/embed.js"></script>
+    <script>
+        function defineMetabaseConfig(config) {
+            window.metabaseConfig = config;
+        }
+        defineMetabaseConfig({
+            "theme": { "preset": "light" },
+            "isGuest": true,
+            "instanceUrl": "http://82.29.160.161:3000"
+        });
+    </script>
 </head>
 
 <body>
@@ -108,8 +121,8 @@
                 </div>
             </div>
 
-            <div class="iframe-container">
-                <iframe id="dashboard-frame"></iframe>
+            <div class="iframe-container" id="dashboard-wrapper">
+                <!-- Web Component injected via Javascript -->
             </div>
         </div>
 
@@ -128,7 +141,7 @@
         const btnText = document.getElementById("btn-text");
         const btnSpinner = document.getElementById("btn-spinner");
         const userDisplay = document.getElementById("user-display");
-        const dashboardFrame = document.getElementById("dashboard-frame");
+        const dashboardWrapper = document.getElementById("dashboard-wrapper");
 
         // Runs immediately on load to check existing session
         async function checkSession() {
@@ -155,7 +168,7 @@
                 }
             } catch (err) {
                 console.error("Backend offline or connection error:", err);
-                showError("Cannot reach security server. Please make sure the server is running on port 5000.");
+                showError("Cannot reach security server.");
                 showLogin();
             }
         }
@@ -204,14 +217,14 @@
                 }
             } catch (err) {
                 console.error("Login request failed:", err);
-                showError("Server is offline. Start backend server first on port 5000.");
+                showError("Server is offline or unreachable.");
             } finally {
                 btnText.style.display = "block";
                 btnSpinner.style.display = "none";
             }
         }
 
-        // Fetch protected Metabase token and display inside iframe
+        // Fetch protected Metabase token and display inside Web Component
         async function loadDashboard(token) {
             try {
                 const response = await fetch(`${API_BASE}/api/metabase-token`, {
@@ -222,7 +235,9 @@
 
                 if (response.ok) {
                     const data = await response.json();
-                    dashboardFrame.src = data.iframeUrl;
+                    
+                    // Generate Web Component dynamically
+                    dashboardWrapper.innerHTML = `<metabase-dashboard token="${data.token}" with-title="true" with-downloads="true"></metabase-dashboard>`;
 
                     // Transition Views with smooth animation
                     loginSection.style.display = "none";
@@ -244,7 +259,7 @@
         // Handle Logout
         function handleLogout() {
             localStorage.removeItem("authToken");
-            dashboardFrame.src = "";
+            dashboardWrapper.innerHTML = "";
             document.getElementById("username").value = "";
             document.getElementById("password").value = "";
             showLogin();
