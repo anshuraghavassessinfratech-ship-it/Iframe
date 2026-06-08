@@ -7,6 +7,7 @@
   ],
   "routes": [
     { "src": "/api/(.*)", "dest": "/api/index.js" },
+    { "src": "/metabase/(.*)", "dest": "http://82.29.160.161:3000/$1" },
     { "src": "/style.css", "dest": "/style.css" },
     { "src": "/(.*)", "dest": "/index.html" }
   ]

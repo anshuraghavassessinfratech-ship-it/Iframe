@@ -7,6 +7,12 @@
   status = 200
 
 [[redirects]]
+  from = "/metabase/*"
+  to = "http://82.29.160.161:3000/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200

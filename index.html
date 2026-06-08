@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="/style.css">
     
     <!-- Metabase Web Component Config -->
-    <script defer src="http://82.29.160.161:3000/app/embed.js"></script>
+    <script defer src="/metabase/app/embed.js"></script>
     <script>
         function defineMetabaseConfig(config) {
             window.metabaseConfig = config;
@@ -18,7 +18,7 @@
         defineMetabaseConfig({
             "theme": { "preset": "light" },
             "isGuest": true,
-            "instanceUrl": "http://82.29.160.161:3000"
+            "instanceUrl": window.location.origin + "/metabase"
         });
     </script>
 </head>
