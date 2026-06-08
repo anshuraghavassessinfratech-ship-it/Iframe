@@ -42,6 +42,15 @@
         </div>
       </div>
 
+      <div id="dashboard-data" class="dashboard-data">
+        <p>Your dashboard information:</p>
+        <ul>
+          <li><strong>Username:</strong> <span id="dashboard-username"></span></li>
+          <li><strong>Last login:</strong> <span id="dashboard-last-login"></span></li>
+          <li><strong>Project status:</strong> <span id="dashboard-status">Active</span></li>
+        </ul>
+      </div>
+
       <button class="logout-btn" id="logout-button" type="button">Logout</button>
     </div>
   </div>
@@ -54,6 +63,9 @@
       const messageEl = document.getElementById("message");
       const dashboardWelcome = document.getElementById("dashboard-welcome");
       const logoutButton = document.getElementById("logout-button");
+      const dashboardUsername = document.getElementById("dashboard-username");
+      const dashboardLastLogin = document.getElementById("dashboard-last-login");
+      const dashboardStatus = document.getElementById("dashboard-status");
 
       console.log("DOM loaded", {
         loginContainer: !!loginContainer,
@@ -61,10 +73,12 @@
         loginForm: !!loginForm,
         messageEl: !!messageEl,
         dashboardWelcome: !!dashboardWelcome,
+        dashboardUsername: !!dashboardUsername,
+        dashboardLastLogin: !!dashboardLastLogin,
         logoutButton: !!logoutButton
       });
 
-      if (!loginContainer || !dashboardContainer || !loginForm || !messageEl || !dashboardWelcome || !logoutButton) {
+      if (!loginContainer || !dashboardContainer || !loginForm || !messageEl || !dashboardWelcome || !dashboardUsername || !dashboardLastLogin || !logoutButton) {
         console.error("Missing required UI element(s)");
         return;
       }
@@ -121,6 +135,9 @@
         dashboardContainer.style.display = "flex";
         dashboardContainer.style.flexDirection = "column";
         dashboardWelcome.textContent = `Welcome, ${username}!`;
+        dashboardUsername.textContent = username;
+        dashboardLastLogin.textContent = new Date().toLocaleString();
+        dashboardStatus.textContent = "Active";
         console.log("Dashboard visible?", {
           inlineDisplay: dashboardContainer.style.display,
           computedDisplay: window.getComputedStyle(dashboardContainer).display
